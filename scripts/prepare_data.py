@@ -1,3 +1,6 @@
+"""Preprocess csv files to generate train / val /test splits"""
+
+__author__ = "NSanjay"
 from pathlib import *
 import csv
 import json

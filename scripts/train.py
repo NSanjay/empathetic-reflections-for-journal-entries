@@ -1,3 +1,6 @@
+"""Script to train a GPT-2 model to recognize"""
+
+__author__ = "NSanjay"
 import argparse
 import glob
 import logging
@@ -55,10 +58,6 @@ def load_and_cache_examples(args, tokenizer, evaluate=False):
     if n != 0:
         dataset.examples = dataset.examples[:-n]
     return dataset
-    # if args.line_by_line:
-    #     return LineByLineTextDataset(tokenizer, args, file_path=file_path, block_size=args.block_size)
-    # else:
-    #     return TextDataset(tokenizer, args, file_path=file_path, block_size=args.block_size)
 
 
 def mask_tokens(inputs: torch.Tensor, tokenizer: PreTrainedTokenizer, args) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -66,7 +65,8 @@ def mask_tokens(inputs: torch.Tensor, tokenizer: PreTrainedTokenizer, args) -> T
 
     if tokenizer.mask_token is None:
         raise ValueError(
-            "This tokenizer does not have a mask token which is necessary for masked language modeling. Remove the --mlm flag if you want to use this tokenizer."
+            "This tokenizer does not have a mask token which is necessary for masked language modeling. "
+            "Remove the --mlm flag if you want to use this tokenizer."
         )
 
     labels = inputs.clone()
@@ -640,29 +640,6 @@ def main():
 
         global_step, tr_loss = train(args, train_dataset, model, tokenizer)
         logger.info(" global_step = %s, average loss = %s", global_step, tr_loss)
-
-    # Saving best-practices: if you use save_pretrained for the model and tokenizer, you can reload them using from_pretrained()
-    # if args.do_train and (args.local_rank == -1 or torch.distributed.get_rank() == 0):
-    #     # Create output directory if needed
-    #     if args.local_rank in [-1, 0]:
-    #         os.makedirs(args.output_dir, exist_ok=True)
-    #
-    #     logger.info("Saving model checkpoint to %s", args.output_dir)
-    #     # Save a trained model, configuration and tokenizer using `save_pretrained()`.
-    #     # They can then be reloaded using `from_pretrained()`
-    #     model_to_save = (
-    #         model.module if hasattr(model, "module") else model
-    #     )  # Take care of distributed/parallel training
-    #     model_to_save.save_pretrained(args.output_dir)
-    #     tokenizer.save_pretrained(args.output_dir)
-    #
-    #     # Good practice: save your training arguments together with the trained model
-    #     torch.save(args, os.path.join(args.output_dir, "training_args.bin"))
-    #
-    #     # Load a trained model and vocabulary that you have fine-tuned
-    #     model = AutoModelWithLMHead.from_pretrained(args.output_dir)
-    #     tokenizer = AutoTokenizer.from_pretrained(args.output_dir)
-    #     model.to(args.device)
 
 
 if __name__ == "__main__":

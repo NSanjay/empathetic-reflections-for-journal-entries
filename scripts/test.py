@@ -1,3 +1,6 @@
+"""Script to test a generator"""
+
+__author__ = "NSanjay"
 import argparse
 import glob
 import logging
@@ -295,8 +298,6 @@ def train(args, train_dataset, model: PreTrainedModel, tokenizer: PreTrainedToke
                 eval_loss = 0.0
                 nb_eval_steps = 0
                 for line in tqdm(f, desc="Evaluating"):
-                    # if i > 0:
-                    #     break
                     out_json = {}
                     line = json.loads(line)
                     example_id = line.get("example_id")

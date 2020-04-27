@@ -1,13 +1,10 @@
-import argparse
-import glob
+"""Utilites file"""
+
+__author__ = "NSanjay"
 import logging
 import os
 import json
 import random
-import re
-import shutil
-from typing import Dict, List, Tuple
-from pathlib import *
 
 import numpy as np
 import torch
