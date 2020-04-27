@@ -768,5 +768,6 @@ def main():
             for _, out_json in id_to_json_map.items():
                 out_file.write(out_json + "\n")
 
+
 if __name__ == "__main__":
     main()

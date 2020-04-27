@@ -15,23 +15,26 @@ Output short, contextual and empathetic reflections by processing journal entrie
 ### File Structure
 * **data** : Contains the data files used to train and evaluate the model.
 * **scripts** : Contains scripts to preprocess data, and to train and evaluate the model.
+* **results** : Contains the responses for journaling entries in the test set in jsonl format.
 
 ### Steps to reproduce
 
-1. Clone the `hugginface\transformers` repository from this [link](https://github.com/huggingface/transformers).
-2. Reset to commit `827d6d6ef0` using the command `git reset --hard 827d6d6ef0`  
-3. Install from source.
-4. Clone this repository.
+1. Download this repository.
+2. Clone the `hugginface\transformers` repository from this [link](https://github.com/huggingface/transformers).
+3. Reset to commit `827d6d6ef0` using the command `git reset --hard 827d6d6ef0`  
+4. Install from source.
 5. Preprocess [counsel_chat.csv](data/counsel_chat.csv) using [prepare_data.py](scripts/prepare_data.py) to generate train, val and test splits using: `python prepare_data.py`.
 6. Run the training script [train.py](scripts/train.py) using the command:
    ```python train.py     --output_dir=output     --model_type=gpt2     --model_name_or_path=gpt2     --data_dir=../data     --do_train     --train_data_file=train.jsonl   --do_eval    --eval_data_file=val.jsonl --per_gpu_train_batch_size 8 --num_train_epochs 5 --overwrite_output_dir --num_return_sequences 5 --learning_rate 2e-5 -k 7 -p 0.7```
+
 7. Run the test script:
     `python test.py     --output_dir=output_1     --model_type=gpt2     --model_name_or_path=output     --data_dir=../data    --eval_data_file=test.jsonl --overwrite_output_dir --num_return_sequences 5 -k 7 -p 0.7`
 
-8. The evaluation metric used is perplexity.
+8. The above scripts were tested on a node with 2 V100 32 GB GPUs.
+9. The evaluation metric used is perplexity.
 
 #### Generator Parameters
-Apart from the parameters mentioned above, the parameters used to control the generation of text are:
+The parameters used to control the generation of text are:
 
 
 | Parameters        | Description           |
@@ -65,7 +68,7 @@ Apart from the parameters mentioned above, the parameters used to control the ge
 2. The evaluation metrics to evaluate responses.
 3. How to generate truly contextual responses. Some examples included random names of people.
 4. How to avoid generating incorrect and highly insensitive responses.
-5. Avoid generating responses that are continuations of the question.
+5. Avoid generating responses that are continuations of the journaling entry.
 6. Stop generating once a coherent sentence is generated. 
 
 Example Response from an experiment with no filtering before sampling (k=0 and p=0) describing points 3 and 4 :
